@@ -1,0 +1,5 @@
+dbt-bigquery
+dbt-core
+pandas
+pandas-gbq
+pre-commit
