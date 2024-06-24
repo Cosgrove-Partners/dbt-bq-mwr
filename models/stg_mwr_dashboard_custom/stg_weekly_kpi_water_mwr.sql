@@ -1,0 +1,22 @@
+select
+    'MWR' as company,
+    'Water Out' as branch,
+    a.date,
+    a.total_income as rev,
+    a.gross_profit as gp,
+    a.overtime,
+    a.sub_labor,
+    a.total_labor,
+    a.ar_o60_value as ar_o60,
+    a.ar_total,
+    a.employee_count as emp,
+    null as mitigation_revenue,
+    null as mitigation_labor,
+    null as raven_miles,
+    null as ctn_income,
+    null as ctn_labor,
+    null as ets_income,
+    null as ets_labor,
+    null as str_income,
+    null as str_labor
+from {{ source("google_sheets", "weekly_kpi_water_mwr") }} a

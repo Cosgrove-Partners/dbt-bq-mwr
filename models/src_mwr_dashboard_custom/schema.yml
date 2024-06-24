@@ -1,0 +1,7 @@
+models:
+  - name: base_fedex_kpi
+    description: 'Base model for fedex_kpi'
+    columns:
+      - name: job_number
+        data_tests:
+          - not_null

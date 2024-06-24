@@ -1,0 +1,1375 @@
+models:
+  - name: fedex_kpi
+    columns:
+      - name: job_number
+        data_type: string
+        description: The unique identifier for each job. This is a primary key and is
+          unique for each job.
+        tests:
+          - not_null
+      - name: week_date
+        description: The date when the job was received, truncated to the start of the
+          week. This is used for weekly reporting and analysis.
+        data_type: datetime
+        quote: true
+      - name: division
+        description: The division that is responsible for the job. This can be used to
+          filter or group jobs by division for reporting and analysis.
+        data_type: string
+        quote: true
+      - name: estimator
+        description: The 'estimator' column represents the individual who is responsible
+          for estimating the job. This is typically a role within the
+          organization that is responsible for assessing the scope and cost of a
+          project.
+        data_type: string
+        quote: true
+      - name: is_win
+        description: The 'is_win' column is a boolean flag that indicates whether the
+          job was won or not. A value of 1 indicates that the job was won, while
+          a value of 0 indicates that it was not.
+        data_type: boolean
+        quote: true
+      - name: is_loss
+        description: The 'is_loss' column is a boolean flag that indicates whether the
+          job was lost or not. A value of 1 indicates that the job was lost,
+          while a value of 0 indicates that it was not.
+        data_type: boolean
+        quote: true
+      - name: is_pending
+        description: This column is a boolean flag indicating whether the job is
+          currently pending. A value of 1 indicates that the job is pending,
+          while a value of 0 indicates that the job is not pending.
+        data_type: boolean
+        quote: true
+      - name: is_inprogress
+        description: This column is a boolean flag indicating whether the job is
+          currently in progress. A value of 1 indicates that the job is in
+          progress, while a value of 0 indicates that the job is not in
+          progress.
+        data_type: boolean
+        quote: true
+      - name: is_incomplete
+        description: This column is a boolean flag indicating whether the job is
+          currently incomplete. A value of 1 indicates that the job is
+          incomplete, while a value of 0 indicates that the job is not
+          incomplete.
+        data_type: boolean
+        quote: true
+      - name: lead_to_contact
+        description: This column represents the time taken from the initiation of a job
+          to the first contact with the customer. It is measured in days.
+        data_type: boolean
+        quote: true
+      - name: lead_to_inspect
+        description: This column represents the time taken from the first contact with
+          the customer to the inspection of the job. It is measured in days.
+        data_type: boolean
+        quote: true
+      - name: phase
+        description: This column represents the current phase of the job. It can take
+          the values 'Contact', 'Inspect', 'Estimate', 'Start', or 'Finish'.
+        data_type: string
+        quote: true
+      - name: days
+        description: This column represents the number of days for each phase of the
+          job. The phases include contact, inspect, estimate, start, and finish.
+          If the number of days is not available, it is represented as NULL.
+        data_type: int64
+        quote: true
+      - name: total_invoiced
+        description: This column represents the total amount invoiced for the job. It is
+          a cumulative sum of all the invoices generated for a particular job.
+        data_type: float64
+        quote: true
+      - name: consecutive_days
+        description: This column represents the number of consecutive days from the
+          start of the job. It is calculated from the date the job was started
+          until the current date, counting only the consecutive days without any
+          breaks.
+        data_type: int64
+        quote: true
+      - name: empty_phase
+        description: This column represents the phase of the job that is currently empty
+          or not yet filled. The phase can be 'Contact', 'Inspect', 'Estimate',
+          'Start', or 'Finish'. If the phase is empty, it means that the
+          corresponding action for that phase has not yet been completed.
+        data_type: int64
+        quote: true
+    description: The fedex_kpi model is a comprehensive dataset that provides key
+      performance indicators for FedEx. It includes information about job
+      numbers, dates, divisions, estimators, and various status flags. The model
+      also includes metrics related to the lead-to-contact and lead-to-inspect
+      processes, as well as the phase of each job. Additional metrics include
+      the number of days for each phase, the total invoiced amount, the number
+      of consecutive days, and a flag indicating whether a phase is empty. The
+      data is derived from the `np_stg_mwr_dashboard_custom.stg_fedex_kpi` table
+      in the `data-warehouse-393918` database.
+  - name: fedex_kpi_aggm
+    columns:
+      - name: source
+        data_type: string
+        description: The source column represents the origin of the data. This could be
+          a specific department, system, or process from where the data is being
+          pulled.
+        tests:
+          - not_null
+      - name: week_date
+        description: The week_date column represents the date of the week for which the
+          data is being reported. This is typically the end date of the
+          reporting week.
+        data_type: datetime
+        quote: true
+      - name: jobs
+        description: The jobs column represents the total number of jobs or tasks that
+          were handled during the reporting period. This could include tasks
+          such as deliveries, pickups, or other logistical operations.
+        data_type: int64
+        quote: true
+      - name: wins
+        description: The 'wins' column represents the total number of successful
+          transactions or deals that have been closed within a specific time
+          period.
+        data_type: int64
+        quote: true
+      - name: total_invoiced
+        description: The 'total_invoiced' column represents the total amount that has
+          been invoiced to customers within a specific time period. This
+          includes all completed transactions, regardless of whether they were
+          successful or not.
+        data_type: float64
+        quote: true
+      - name: avg_total_invoiced
+        description: The 'avg_total_invoiced' column represents the average amount that
+          has been invoiced to customers within a specific time period. This is
+          calculated by dividing the total invoiced amount by the number of
+          invoices issued.
+        data_type: float64
+        quote: true
+      - name: win_pct
+        description: This column represents the percentage of jobs that were won. It is
+          calculated by dividing the number of wins by the total number of jobs.
+        data_type: float64
+        quote: true
+      - name: best_month
+        description: This column indicates the month with the highest number of wins. It
+          is calculated by comparing the number of wins in each month and
+          selecting the month with the highest value.
+        data_type: int64
+        quote: true
+      - name: last_month
+        description: This column represents the data for the previous month. It includes
+          all the metrics for the last month.
+        data_type: int64
+        quote: true
+      - name: new_month
+        description: This column represents the start of a new month in the data. It is
+          a boolean value where '1' indicates the start of a new month and '0'
+          indicates otherwise.
+        data_type: datetime
+        quote: true
+      - name: days_in_month
+        description: This column represents the total number of days in the month for
+          the given data row. It is calculated based on the month and year of
+          the 'week_date' column.
+        data_type: int64
+        quote: true
+      - name: days_to_date
+        description: This column represents the number of days that have passed in the
+          current month up to the date of the given data row. It is calculated
+          based on the day of the 'week_date' column.
+        data_type: int64
+        quote: true
+      - name: leads_per_day
+        description: This column represents the average number of leads generated per day.
+        data_type: float64
+        quote: true
+      - name: forecast_mode
+        data_type: string
+        description: This column indicates the mode of forecasting used for the data. It
+          could be either 'manual' or 'automated'.
+        tests:
+          - accepted_values:
+              values:
+                - Best Month
+                - Last Month
+                - Trailing 3 Months
+          - not_null
+      - name: previous_win_pct
+        description: This column represents the win percentage from the previous period.
+          It is calculated as the number of wins divided by the total number of
+          jobs.
+        data_type: float64
+        quote: true
+      - name: estimated_wins_per_day
+        description: This column represents the estimated number of wins per day. It is
+          calculated based on historical data and current trends.
+        data_type: float64
+        quote: true
+      - name: wins_in_month
+        description: This column represents the total number of wins in the current
+          month. It is updated daily and resets at the beginning of each month.
+        data_type: float64
+        quote: true
+      - name: wins_to_date
+        description: This column represents the cumulative number of wins to date for
+          the current year. It is updated daily and resets at the beginning of
+          each year.
+        data_type: float64
+        quote: true
+      - name: avg_total_invoiced_ytd
+        description: This column represents the average total invoiced amount for the
+          year to date. It is calculated by summing all the invoiced amounts
+          from the start of the year to the current date and then dividing by
+          the number of days in this period.
+        data_type: float64
+        quote: true
+      - name: med_total_invoiced_ytd
+        description: This column represents the median total invoiced amount for the
+          year to date. It is calculated by arranging all the invoiced amounts
+          from the start of the year to the current date in ascending order and
+          then picking the middle value. If there is an even number of values,
+          the median is the average of the two middle values.
+        data_type: float64
+        quote: true
+      - name: med_total_invoiced
+        description: This column represents the median total invoiced amount. It is
+          calculated by arranging all the invoiced amounts in ascending order
+          and then picking the middle value. If there is an even number of
+          values, the median is the average of the two middle values.
+        data_type: float64
+        quote: true
+      - name: total_invoiced_in_month
+        description: This column represents the total amount invoiced for the given
+          month. It is calculated by summing up all the invoices generated
+          within the month for the specific source.
+        data_type: float64
+        quote: true
+      - name: med_total_invoiced_in_month
+        description: This column represents the median total invoiced amount for the
+          given month. It is calculated by finding the middle value of all the
+          invoices generated within the month for the specific source when
+          arranged in ascending order.
+        data_type: float64
+        quote: true
+    tests:
+      - unique:
+          column_name: "source || '-' || forecast_mode || '-' || week_date"
+    description: The 'fedex_kpi_aggm' model is a comprehensive data model that
+      aggregates key performance indicators (KPIs) for FedEx. It includes
+      various metrics such as the source of data, week date, number of jobs,
+      wins, total invoiced amount, average total invoiced amount, win
+      percentage, best month, last month, new month, days in the month, days to
+      date, leads per day, forecast mode, previous win percentage, estimated
+      wins per day, wins in the month, wins to date, average total invoiced year
+      to date, median total invoiced year to date, median total invoiced, total
+      invoiced in the month, and median total invoiced in the month. This model
+      is sourced from the 'fedex_kpi_aggm_tmp' table in the
+      'np_prod_mwr_dashboard_custom' dataset of the 'data-warehouse-393918'
+      project.
+  - name: fedex_kpi_aggm_hist
+    columns:
+      - name: source
+        data_type: string
+        tests:
+          - not_null
+      - name: forecast_mode
+        data_type: string
+        tests:
+          - accepted_values:
+              values:
+                - Best Month
+                - Trailing 3 Months
+                - Last Month
+          - not_null
+      - name: day_forecast
+        data_type: date
+        quote: true
+      - name: leads
+        data_type: int64
+        quote: true
+      - name: starts
+        data_type: int64
+        quote: true
+      - name: estimated_wins
+        data_type: float64
+        quote: true
+    tests:
+      - unique:
+          column_name: source || '-' || forecast_mode || '-' || day_forecast
+    description: "The 'fedex_kpi_aggm_hist' model is a historical aggregation of key
+      performance indicators (KPIs) for FedEx. It pulls data from the
+      'fedex_kpi_aggm_tmp' table in the 'np_prod_mwr_dashboard_custom' dataset
+      of the 'data-warehouse-393918' project. The model includes the following
+      columns: 'source', 'forecast_mode', 'day_forecast', 'leads', 'starts', and
+      'estimated_wins'. The 'source' column indicates the data source. The
+      'forecast_mode' column indicates the mode of the forecast. The
+      'day_forecast' column represents the date of the forecast, truncated to
+      the day. The 'leads' column, renamed from 'jobs', represents the number of
+      leads. The 'starts' column, renamed from 'wins', represents the number of
+      starts. The 'estimated_wins' column, renamed from 'wins_to_date',
+      represents the estimated number of wins to date."
+  - name: fedex_obt
+    columns:
+      - name: job_number
+        data_type: string
+        tests:
+          - not_null
+      - name: division
+        data_type: string
+        tests:
+          - not_null
+      - name: date_received
+        data_type: datetime
+        quote: true
+      - name: date_contacted
+        data_type: datetime
+        quote: true
+      - name: date_inspected
+        data_type: datetime
+        quote: true
+      - name: date_estimate_sent
+        data_type: datetime
+        quote: true
+      - name: date_started
+        data_type: datetime
+        quote: true
+      - name: date_closed
+        data_type: datetime
+        quote: true
+      - name: total_invoiced
+        data_type: float64
+        quote: true
+      - name: total_job_cost
+        data_type: float64
+        quote: true
+      - name: working_gp_pct
+        data_type: float64
+        quote: true
+      - name: estimator
+        data_type: string
+        quote: true
+      - name: total_estimates
+        data_type: float64
+        quote: true
+      - name: loss_category
+        data_type: string
+        quote: true
+      - name: date_estimate_approved
+        data_type: datetime
+        quote: true
+      - name: date_invoiced
+        data_type: datetime
+        quote: true
+      - name: date_of_cos
+        data_type: datetime
+        quote: true
+      - name: date_of_loss
+        data_type: datetime
+        quote: true
+      - name: date_of_majority_completion
+        data_type: datetime
+        quote: true
+      - name: date_of_work_authorization
+        data_type: datetime
+        quote: true
+      - name: foreman
+        data_type: string
+        quote: true
+      - name: insurance_carrier
+        data_type: string
+        quote: true
+      - name: job_name
+        data_type: string
+        quote: true
+      - name: loss_address
+        data_type: string
+        quote: true
+      - name: loss_city
+        data_type: string
+        quote: true
+      - name: loss_state
+        data_type: string
+        quote: true
+      - name: type_of_loss
+        data_type: string
+        quote: true
+      - name: loss_zip
+        data_type: string
+        quote: true
+      - name: marketing_person
+        data_type: string
+        quote: true
+      - name: referred_by_marketing_campaign
+        data_type: string
+        quote: true
+      - name: referred_by_contact
+        data_type: string
+        quote: true
+      - name: referred_by
+        data_type: string
+        quote: true
+      - name: referred_by_company
+        data_type: string
+        quote: true
+      - name: referred_by_contact_category
+        data_type: string
+        quote: true
+      - name: referred_by_contact_type
+        data_type: string
+        quote: true
+      - name: total_work_order_budget
+        data_type: float64
+        quote: true
+      - name: subtrade_cost
+        data_type: float64
+        quote: true
+      - name: materials_cost
+        data_type: float64
+        quote: true
+      - name: other_cost
+        data_type: float64
+        quote: true
+      - name: referral_fee_cost
+        data_type: float64
+        quote: true
+      - name: total_collected
+        data_type: float64
+        quote: true
+      - name: lien_rights_expiration
+        data_type: datetime
+        quote: true
+      - name: labor_cost
+        data_type: float64
+        quote: true
+      - name: class
+        data_type: string
+        quote: true
+      - name: invoice_number
+        data_type: string
+        quote: true
+      - name: updated_date
+        data_type: datetime
+        quote: true
+      - name: job_status
+        data_type: string
+        quote: true
+      - name: secondary_loss_type
+        data_type: string
+        quote: true
+      - name: job_completion_percentage
+        data_type: float64
+        quote: true
+      - name: referral_fee_date_paid
+        data_type: datetime
+        quote: true
+      - name: branch
+        data_type: string
+        tests:
+          - accepted_values:
+              values:
+                - MWR
+                - Magna-Dry
+                - Water Out
+          - not_null
+      - name: group
+        quote: true
+        data_type: string
+      - name: days_to_contact
+        data_type: int64
+        quote: true
+      - name: days_to_inspect
+        data_type: int64
+        quote: true
+      - name: days_to_send_estimate
+        data_type: int64
+        quote: true
+      - name: days_to_authorize
+        data_type: int64
+        quote: true
+      - name: days_to_start
+        data_type: int64
+        quote: true
+      - name: days_to_majority_completion
+        data_type: int64
+        quote: true
+      - name: days_to_paid_fee
+        data_type: int64
+        quote: true
+      - name: days_to_invoice
+        data_type: int64
+        quote: true
+      - name: days_to_close
+        data_type: int64
+        quote: true
+      - name: consecutive_days
+        data_type: int64
+        quote: true
+      - name: hours_to_contact
+        data_type: int64
+        quote: true
+      - name: hours_to_inspect
+        data_type: int64
+        quote: true
+      - name: hours_to_send_estimate
+        data_type: int64
+        quote: true
+      - name: hours_to_authorize
+        data_type: int64
+        quote: true
+      - name: hours_to_start
+        data_type: int64
+        quote: true
+      - name: hours_to_majority_completion
+        data_type: int64
+        quote: true
+      - name: hours_to_paid_fee
+        data_type: int64
+        quote: true
+      - name: hours_to_invoice
+        data_type: int64
+        quote: true
+      - name: hours_to_close
+        data_type: int64
+        quote: true
+      - name: consecutive_hours
+        data_type: int64
+        quote: true
+      - name: is_win
+        data_type: boolean
+        quote: true
+      - name: is_loss
+        data_type: boolean
+        quote: true
+      - name: is_pending
+        data_type: boolean
+        quote: true
+      - name: is_inprogress
+        data_type: boolean
+        quote: true
+      - name: is_incomplete
+        data_type: boolean
+        quote: true
+      - name: lead_to_contact
+        data_type: boolean
+        quote: true
+      - name: lead_to_inspect
+        data_type: boolean
+        quote: true
+      - name: bad_lead
+        data_type: boolean
+        quote: true
+      - name: week_date_received
+        data_type: datetime
+        quote: true
+      - name: week_date_started
+        data_type: datetime
+        quote: true
+      - name: month_date_received
+        data_type: datetime
+        quote: true
+      - name: month_date_started
+        data_type: datetime
+        quote: true
+      - name: year_date_received
+        data_type: int64
+        quote: true
+      - name: year_date_started
+        data_type: int64
+        quote: true
+      - name: win_total_invoiced_norm
+        data_type: float64
+        quote: true
+      - name: total_invoiced_norm
+        data_type: float64
+        quote: true
+      - name: data_issue
+        data_type: boolean
+        quote: true
+      - name: week_win_med_total_invoiced
+        data_type: float64
+        quote: true
+      - name: month_win_med_total_invoiced
+        data_type: float64
+        quote: true
+      - name: week_med_total_invoiced
+        data_type: float64
+        quote: true
+      - name: month_med_total_invoiced
+        data_type: float64
+        quote: true
+      - name: week_win_avg_total_invoiced
+        data_type: float64
+        quote: true
+      - name: month_win_avg_total_invoiced
+        data_type: float64
+        quote: true
+      - name: week_avg_total_invoiced
+        data_type: float64
+        quote: true
+      - name: month_avg_total_invoiced
+        data_type: float64
+        quote: true
+    description: The 'fedex_obt' model is a comprehensive dataset that provides
+      detailed information about FedEx's operations. It includes various metrics
+      such as job number, division, dates related to job processing, cost
+      details, referral information, job status, and more. The model also
+      includes calculated fields like days and hours to complete certain tasks,
+      job completion percentage, and normalized invoiced amounts. The data is
+      sourced from the 'base_fedex_kpi' table in the
+      'np_src_mwr_dashboard_custom' database of the 'data-warehouse-393918'
+      project. The model is used to analyze and monitor FedEx's operational
+      efficiency and performance.
+  - name: fedex_oper_kpi
+    tests:
+      - unique:
+          column_name: "month_date || '-' || division || '-' || bad_lead"
+    columns:
+      - name: month_date
+        data_type: datetime
+        tests:
+          - not_null
+      - name: division
+        data_type: string
+        tests:
+          - not_null
+      - name: bad_lead
+        data_type: boolean
+        tests:
+          - not_null
+      - name: leads
+        data_type: int64
+        quote: true
+      - name: wins
+        data_type: int64
+        quote: true
+      - name: starts_in_month
+        data_type: int64
+        quote: true
+      - name: total_invoiced_in_month
+        data_type: float64
+        quote: true
+      - name: gp_in_month
+        data_type: float64
+        quote: true
+    description: The 'fedex_oper_kpi' model is a comprehensive view of FedEx's
+      operational key performance indicators (KPIs). It includes monthly data on
+      leads, wins, starts, total invoiced, and gross profit (gp). The model is
+      built from the 'stg_fedex_kpi' source table in the
+      'np_stg_mwr_dashboard_custom' schema of the 'data-warehouse-393918'
+      database. The model's columns include 'month_date' (the month of the
+      data), 'division' (the division of FedEx), 'bad_lead' (a boolean
+      indicating if the lead is bad), 'leads' (the count of distinct job
+      numbers), 'wins' (the count of distinct job numbers that resulted in a
+      win), 'starts_in_month' (the count of distinct job numbers that started in
+      the month), 'total_invoiced_in_month' (the sum of total invoiced in the
+      month), and 'gp_in_month' (the sum of total invoiced minus total job cost
+      in the month). The model uses a combination of SQL operations, including
+      WITH clauses, aggregations, and a LEFT JOIN, to compile the data.
+  - name: fedex_oper_detail_kpi
+    tests:
+      - unique:
+          column_name: "division || '-' || job_number"
+    columns:
+      - name: division
+        data_type: string
+        tests:
+          - not_null
+      - name: job_number
+        data_type: string
+        tests:
+          - not_null
+      - name: date_started
+        data_type: datetime
+        quote: true
+      - name: date_received
+        data_type: datetime
+        quote: true
+      - name: total_invoiced
+        data_type: float64
+        quote: true
+      - name: total_job_cost
+        data_type: float64
+        quote: true
+      - name: date_inspected
+        data_type: datetime
+        quote: true
+      - name: month_date_started
+        data_type: datetime
+        quote: true
+    description: The 'fedex_oper_detail_kpi' model is a transformation of the
+      'stg_fedex_kpi' staging table. It aggregates data at the division and
+      job_number level, providing the maximum values for date_started,
+      date_received, total_job_cost, and date_inspected, and the sum of
+      total_invoiced for each unique combination of division and job_number.
+      Additionally, it includes a new column, month_date_started, which
+      truncates the date_started to the month level. This model is useful for
+      analyzing operational details and key performance indicators (KPIs) for
+      FedEx at a granular level.
+  - name: lead_kpi
+    columns:
+      - name: date_estimate_sent
+        data_type: datetime
+        quote: true
+      - name: total_estimates
+        data_type: float64
+        quote: true
+      - name: date_received
+        data_type: datetime
+        quote: true
+      - name: customer_contact_category
+        data_type: string
+        quote: true
+      - name: date_closed
+        data_type: datetime
+        quote: true
+      - name: date_estimate_approved
+        data_type: datetime
+        quote: true
+      - name: date_loss
+        data_type: datetime
+        quote: true
+      - name: date_invoiced
+        data_type: datetime
+        quote: true
+      - name: date_cos
+        data_type: datetime
+        quote: true
+      - name: date_majority_completion
+        data_type: datetime
+        quote: true
+      - name: date_work_authorization
+        data_type: datetime
+        quote: true
+      - name: date_started
+        data_type: datetime
+        quote: true
+      - name: division
+        data_type: string
+        quote: true
+      - name: estimator
+        data_type: string
+        quote: true
+      - name: foreman
+        data_type: string
+        quote: true
+      - name: insurance_carrier
+        data_type: string
+        quote: true
+      - name: job_name
+        data_type: string
+        quote: true
+      - name: job_number
+        data_type: string
+        tests:
+          - not_null
+      - name: status
+        data_type: string
+        quote: true
+      - name: address
+        data_type: string
+        quote: true
+      - name: city
+        data_type: string
+        quote: true
+      - name: state_province
+        data_type: string
+        quote: true
+      - name: type_of_loss
+        data_type: string
+        quote: true
+      - name: zip_postal_code
+        data_type: string
+        quote: true
+      - name: referredby_contactname
+        data_type: string
+        quote: true
+      - name: source
+        data_type: string
+        quote: true
+      - name: branch
+        data_type: string
+        tests:
+          - not_null
+      - name: is_win
+        data_type: boolean
+        quote: true
+      - name: is_loss
+        data_type: boolean
+        quote: true
+    description: The 'lead_kpi' model is a comprehensive dataset that contains key
+      performance indicators (KPIs) for leads in a business. It includes various
+      date fields such as the date the estimate was sent, received, approved,
+      and closed. It also includes the date of loss, invoicing, cost of sales
+      (cos), majority completion, work authorization, and start date. The model
+      also provides information about the customer contact category, division,
+      estimator, foreman, insurance carrier, job name, job number, status,
+      address, city, state/province, type of loss, zip/postal code, referral
+      contact name, source, and branch. Additionally, it includes boolean fields
+      to indicate if the lead resulted in a win or loss. The data for this model
+      is sourced from the 'stg_lead_kpi' table in the
+      'np_stg_mwr_dashboard_custom' dataset of the 'data-warehouse-393918'
+      project.
+  - name: monthly_kpi
+    tests:
+      - unique:
+          column_name: company || '-' || branch || '-' || date
+    columns:
+      - name: company
+        data_type: string
+        tests:
+          - not_null
+      - name: branch
+        data_type: string
+        tests:
+          - not_null
+      - name: date
+        quote: true
+        data_type: date
+      - name: Rev
+        data_type: float64
+        quote: true
+      - name: gp
+        data_type: float64
+      - name: Overtime
+        data_type: float64
+        quote: true
+      - name: Sub_Labor
+        data_type: float64
+        quote: true
+      - name: Total_Labor
+        data_type: float64
+        quote: true
+      - name: ar_o60
+        data_type: float64
+      - name: AR_Total
+        data_type: float64
+        quote: true
+      - name: Emp
+        data_type: float64
+        quote: true
+      - name: Mitigation_Revenue
+        data_type: float64
+        quote: true
+      - name: Mitigation_Labor
+        data_type: float64
+        quote: true
+      - name: Raven_Miles
+        data_type: float64
+        quote: true
+      - name: CTN_Income
+        data_type: float64
+        quote: true
+      - name: CTN_Labor
+        data_type: float64
+        quote: true
+      - name: ETS_Income
+        data_type: float64
+        quote: true
+      - name: ETS_Labor
+        data_type: float64
+        quote: true
+      - name: STR_Income
+        data_type: float64
+        quote: true
+      - name: STR_Labor
+        data_type: float64
+        quote: true
+    description: The 'monthly_kpi' model is a union of three different tables from
+      the 'np_stg_mwr_dashboard_custom' dataset in the 'data-warehouse-393918'
+      project. This model contains key performance indicators (KPIs) for a
+      company on a monthly basis. The KPIs include revenue, gross profit,
+      overtime, subcontractor labor, total labor, accounts receivable over 60
+      days, total accounts receivable, number of employees, mitigation revenue,
+      mitigation labor, raven miles, CTN income, CTN labor, ETS income, ETS
+      labor, STR income, and STR labor. The model is filtered to exclude rows
+      where the date is null. The 'company' and 'branch' columns provide context
+      for the KPIs.
+  - name: weekly_kpi
+    tests:
+      - unique:
+          column_name: company || '-' || branch || '-' || date
+    columns:
+      - name: company
+        data_type: string
+        tests:
+          - not_null
+      - name: branch
+        data_type: string
+        tests:
+          - not_null
+      - name: date
+        quote: true
+        data_type: date
+      - name: rev
+        data_type: float64
+        quote: true
+      - name: gp
+        data_type: float64
+        quote: true
+      - name: overtime
+        data_type: float64
+        quote: true
+      - name: sub_labor
+        data_type: float64
+        quote: true
+      - name: total_labor
+        data_type: float64
+        quote: true
+      - name: ar_o60
+        data_type: float64
+        quote: true
+      - name: ar_total
+        data_type: float64
+        quote: true
+      - name: emp
+        data_type: float64
+        quote: true
+      - name: mitigation_revenue
+        data_type: float64
+        quote: true
+      - name: mitigation_labor
+        data_type: float64
+        quote: true
+      - name: raven_miles
+        data_type: float64
+        quote: true
+      - name: ctn_income
+        data_type: float64
+        quote: true
+      - name: ctn_labor
+        data_type: float64
+        quote: true
+      - name: ets_income
+        data_type: float64
+        quote: true
+      - name: ets_labor
+        data_type: float64
+        quote: true
+      - name: str_income
+        data_type: float64
+        quote: true
+      - name: str_labor
+        data_type: float64
+        quote: true
+    description: The 'weekly_kpi' model is a comprehensive data model that
+      aggregates key performance indicators on a weekly basis. The model
+      includes data from multiple sources, namely 'stg_weekly_kpi_magna_mwr',
+      'stg_weekly_kpi_mwr_mwr', and 'stg_weekly_kpi_water_mwr' from the
+      'np_stg_mwr_dashboard_custom' schema in the 'data-warehouse-393918'
+      database. The model includes various metrics such as revenue, gross
+      profit, overtime, subcontractor labor, total labor, accounts receivable
+      over 60 days, total accounts receivable, employee count, mitigation
+      revenue and labor, raven miles, CTN income and labor, ETS income and
+      labor, and STR income and labor. The data is further categorized by
+      company and branch. The model excludes records where the date is null.
+  - name: route_density_kpi
+    columns:
+      - name: division
+        data_type: string
+        quote: true
+      - name: vehicle
+        data_type: string
+        quote: true
+      - name: type
+        data_type: string
+        quote: true
+      - name: trip_type
+        data_type: string
+        tests:
+          - accepted_values:
+              values:
+                - A to B
+                - Leaving FTW
+                - Leaving LAF
+                - Returning to FTW
+                - Returning to LAF
+          - not_null
+      - name: week_date
+        data_type: datetime
+        quote: true
+      - name: start_time
+        data_type: string
+        quote: true
+      - name: end_time
+        data_type: string
+        quote: true
+      - name: total_duration
+        data_type: int64
+        quote: true
+      - name: driving_duration
+        data_type: float64
+        quote: true
+      - name: parked_duration
+        data_type: float64
+        quote: true
+      - name: start_location
+        data_type: string
+        quote: true
+      - name: end_location
+        data_type: string
+        quote: true
+      - name: distance_miles
+        data_type: float64
+        quote: true
+      - name: odometer_miles
+        data_type: float64
+        quote: true
+    description: "The 'route_density_kpi' model is a comprehensive dataset that
+      provides key performance indicators (KPIs) for different routes. The model
+      includes the following columns: 'division', 'vehicle', 'type',
+      'trip_type', 'week_date', 'start_time', 'end_time', 'total_duration',
+      'driving_duration', 'parked_duration', 'start_location', 'end_location',
+      'distance_miles', and 'odometer_miles'. The 'division' column is formatted
+      to have the first letter capitalized if the division name is longer than 3
+      characters. The 'trip_type' column is derived based on the start and end
+      locations, indicating whether the vehicle is leaving or returning to a
+      specific location or simply traveling from point A to B. The
+      'total_duration', 'driving_duration', and 'parked_duration' columns
+      provide the total time, driving time, and parked time for each trip in
+      seconds. The 'distance_miles' and 'odometer_miles' columns provide the
+      distance traveled and the odometer reading in miles."
+  - name: acquisition_comparison_kpi
+    columns:
+      - name: company
+        data_type: string
+        tests:
+          - not_null
+          - unique
+      - name: total_income
+        data_type: float64
+        quote: true
+      - name: gross_profit
+        data_type: float64
+        quote: true
+      - name: overtime
+        data_type: float64
+        quote: true
+      - name: total_labor
+        data_type: float64
+        quote: true
+      - name: ar_o60_value
+        data_type: float64
+        quote: true
+      - name: ar_total
+        data_type: float64
+        quote: true
+      - name: employee_count
+        data_type: float64
+        quote: true
+      - name: avg_monthly_job_starts_mitigation
+        data_type: float64
+        quote: true
+      - name: avg_monthly_job_size_mitigation
+        data_type: float64
+        quote: true
+      - name: close_rate_mitigation
+        data_type: float64
+        quote: true
+    description: The acquisition_comparison_kpi model is designed to provide key
+      performance indicators (KPIs) for different companies. It includes columns
+      for company name, total income, gross profit, overtime, total labor,
+      ar_o60_value, ar_total, employee count, avg_monthly_job_starts_mitigation,
+      avg_monthly_job_size_mitigation, and close_rate_mitigation. The data is
+      sourced from various tables including stg_fedex_kpi,
+      stg_monthly_kpi_magna_mwr, stg_monthly_kpi_water_mwr,
+      stg_monthly_kpi_mwr_mwr, and acquisition_comparison_kpi_other_mwr. The
+      model uses SQL queries to calculate averages, sums, and other metrics for
+      the past 12 months. The model is used for comparing the performance of
+      different companies in terms of income, profit, labor, and other metrics.
+  - name: weather_forecast_kpi_new
+    columns:
+      - name: event_date
+        data_type: datetime
+        tests:
+          - not_null
+          - unique
+      - name: min_temp
+        data_type: float64
+        quote: true
+      - name: max_temp
+        data_type: float64
+        quote: true
+      - name: pressure
+        data_type: float64
+        quote: true
+      - name: precipitation
+        data_type: float64
+        quote: true
+      - name: previous_precipitation
+        data_type: float64
+        quote: true
+      - name: threshold
+        data_type: string
+        quote: true
+      - name: previous_threshold
+        data_type: string
+        quote: true
+      - name: leads
+        data_type: int64
+        quote: true
+      - name: previous_leads
+        data_type: int64
+        quote: true
+    description: "The 'weather_forecast_kpi_new' model is a representation of key
+      performance indicators related to weather forecasts. It includes the
+      following columns: 'event_date' which is a datetime type representing the
+      date of the event, 'min_temp' and 'max_temp' which are float64 types
+      representing the minimum and maximum temperatures respectively, 'pressure'
+      which is a float64 type representing atmospheric pressure, 'precipitation'
+      and 'previous_precipitation' which are float64 types representing the
+      amount of precipitation and the previous amount of precipitation
+      respectively, 'threshold' and 'previous_threshold' which are string types
+      representing the threshold level and the previous threshold level
+      respectively, and 'leads' and 'previous_leads' which are int64 types
+      representing the number of leads and the previous number of leads
+      respectively. The data for this model is sourced from the
+      'stg_weather_forecast_kpi' table in the 'np_stg_mwr_dashboard_custom'
+      database of the 'data-warehouse-393918' server."
+  - name: weather_kpi_new
+    columns:
+      - name: event_date
+        data_type: datetime
+        tests:
+          - not_null
+          - unique
+      - name: depart_from_avg_temp
+        data_type: float64
+        quote: true
+      - name: avg_temp
+        data_type: float64
+        quote: true
+      - name: min_temp
+        data_type: float64
+        quote: true
+      - name: max_temp
+        data_type: float64
+        quote: true
+      - name: precipitation
+        data_type: float64
+        quote: true
+      - name: row_num
+        data_type: int64
+        quote: true
+      - name: is_precipitating
+        data_type: boolean
+        quote: true
+      - name: is_previous_precipitating
+        data_type: boolean
+        quote: true
+      - name: previous_precipitation
+        data_type: float64
+        quote: true
+      - name: leads
+        data_type: int64
+        quote: true
+      - name: total_estimates
+        data_type: float64
+        quote: true
+      - name: yearly_avg
+        data_type: float64
+        quote: true
+      - name: increase_pct
+        data_type: float64
+        quote: true
+      - name: forecast_key
+        data_type: float64
+        quote: true
+      - name: ytd_avg
+        data_type: float64
+        quote: true
+      - name: weekday_YTD_Avg
+        data_type: float64
+        quote: true
+      - name: weekday_yearly_avg
+        data_type: float64
+        quote: true
+      - name: curr_threshold
+        data_type: string
+        quote: true
+      - name: prev_threshold
+        data_type: string
+        quote: true
+      - name: forecast_leads
+        data_type: float64
+        quote: true
+      - name: precipitation_event
+        data_type: boolean
+        quote: true
+      - name: weekday
+        data_type: boolean
+        quote: true
+    description: The 'weather_kpi_new' model is a comprehensive dataset that
+      provides key performance indicators related to weather conditions. It
+      includes data on average, minimum, and maximum temperatures, precipitation
+      levels, and other related metrics. The model also includes derived fields
+      such as 'is_precipitating' and 'is_previous_precipitating' which indicate
+      whether it was precipitating at the time of the event or during the
+      previous event respectively. The 'previous_precipitation' field shows the
+      amount of precipitation during the previous event. The model also includes
+      fields related to forecasting such as 'forecast_key', 'forecast_leads',
+      and 'curr_threshold' and 'prev_threshold'. The 'weekday' field indicates
+      whether the event date was a weekday or not. The data is sourced from the
+      'stg_weather_kpi' table in the 'np_stg_mwr_dashboard_custom' dataset of
+      the 'data-warehouse-393918' project. The model only includes records where
+      the 'event_date' is not null.
+  - name: fedex_kpi_aggm_tmp
+    description: "The 'fedex_kpi_aggm_tmp' model is a temporary model that
+      aggregates key performance indicators (KPIs) for FedEx. It uses data from
+      the 'stg_fedex_kpi_aggm' staging table in the
+      'np_stg_mwr_dashboard_custom' schema of the 'data-warehouse-393918'
+      database. The model calculates various metrics such as win percentage,
+      best month, last month, new month, days in month, days to date, leads per
+      day, previous win percentage, estimated wins per day, wins in month, wins
+      to date, average total invoiced year to date, median total invoiced year
+      to date, total invoiced in month, and median total invoiced in month.
+      These metrics are calculated for three different forecast modes: 'Last
+      Month', 'Best Month', and 'Trailing 3 Months'. The model filters the data
+      to include only the records from the last 12 months."
+    columns:
+      - name: Source
+        description: The 'Source' column represents the origin of the data. This could
+          be a specific department, system, or process that generates the data.
+        data_type: string
+        quote: true
+      - name: Week_Date
+        description: The 'Week_Date' column represents the date of the week for which
+          the data is recorded. This is used to track the data on a weekly
+          basis.
+        data_type: datetime
+        quote: true
+      - name: Jobs
+        description: The 'Jobs' column represents the number of jobs or tasks that were
+          completed in the given week. This is a key performance indicator that
+          is used to measure productivity.
+        data_type: int64
+        quote: true
+      - name: Wins
+        description: This column represents the total number of successful jobs or
+          'wins'. It is calculated by dividing the number of wins by the total
+          number of jobs.
+        data_type: int64
+        quote: true
+      - name: Total_Invoiced
+        description: This column represents the total amount invoiced for the jobs. It
+          is calculated by multiplying the estimated wins per day by the average
+          total invoiced from the previous month, and then multiplying that by
+          the number of days in the current month.
+        data_type: float64
+        quote: true
+      - name: Avg_Total_Invoiced
+        description: This column represents the average total invoiced amount. It is
+          calculated by taking the average of the total invoiced amount from the
+          previous month.
+        data_type: float64
+        quote: true
+      - name: Med_Total_Invoiced
+        description: This column represents the median total invoiced amount for a given
+          source and time period. It is calculated as the median of the total
+          invoiced amounts for all jobs within the specified time period.
+        data_type: float64
+        quote: true
+      - name: win_pct
+        description: This column represents the win percentage for a given source and
+          time period. It is calculated as the number of wins divided by the
+          total number of jobs for the specified time period.
+        data_type: float64
+        quote: true
+      - name: best_month
+        description: This column represents the rank of the best month for a given
+          source based on the win percentage. The month with the highest win
+          percentage is ranked as 1, the month with the second highest win
+          percentage is ranked as 2, and so on.
+        data_type: int64
+        quote: true
+      - name: last_month
+        description: This column represents the rank of the current row when ordered by
+          week_date in descending order, subtracted by 1. It is used to identify
+          the data from the previous month.
+        data_type: int64
+        quote: true
+      - name: new_month
+        description: This column represents the first day of the month for the given
+          week_date. It is used to group data on a monthly basis.
+        data_type: datetime
+        quote: true
+      - name: days_in_month
+        description: This column represents the total number of days in the month of the
+          given week_date. It is used to calculate per day metrics for the
+          month.
+        data_type: int64
+        quote: true
+      - name: days_to_date
+        description: This column represents the number of days from the start of the
+          month to the current date. It is used to calculate the wins_to_date
+          and total_invoiced_in_month metrics.
+        data_type: int64
+        quote: true
+      - name: leads_per_day
+        description: This column represents the average number of leads generated per
+          day. It is calculated by dividing the total number of jobs by the
+          current day of the month. This metric is used in the calculation of
+          estimated_wins_per_day, wins_in_month, wins_to_date,
+          total_invoiced_in_month, and med_total_invoiced_in_month.
+        data_type: float64
+        quote: true
+      - name: forecast_mode
+        description: "This column indicates the mode of forecasting used for the row. It
+          can have three possible values: 'Last Month', 'Best Month', and
+          'Trailing 3 Months'. These modes represent different ways of
+          calculating the win percentage and invoiced amounts based on
+          historical data."
+        data_type: string
+        quote: true
+      - name: previous_win_pct
+        description: This column represents the percentage of wins in the previous
+          period. It is calculated by dividing the number of wins by the total
+          number of jobs for a given source and period.
+        data_type: float64
+        quote: true
+      - name: estimated_wins_per_day
+        description: This column represents the estimated number of wins per day. It is
+          calculated by multiplying the leads per day by the win percentage from
+          the previous period for a given source.
+        data_type: float64
+        quote: true
+      - name: wins_in_month
+        description: This column represents the estimated total number of wins in a
+          month. It is calculated by multiplying the estimated wins per day by
+          the number of days in the month.
+        data_type: float64
+        quote: true
+      - name: wins_to_date
+        description: This column represents the estimated number of wins to the current
+          date. It is calculated by multiplying the leads per day by the win
+          percentage and the number of days to the current date.
+        data_type: float64
+        quote: true
+      - name: avg_total_invoiced_ytd
+        description: This column represents the average total invoiced amount for the
+          year to date. It is calculated by taking the average of the
+          'avg_total_invoiced' column for the last month or best month or
+          trailing 3 months, depending on the forecast mode.
+        data_type: float64
+        quote: true
+      - name: med_total_invoiced_ytd
+        description: This column represents the median total invoiced amount for the
+          year to date. It is calculated by taking the average of the
+          'med_total_invoiced' column for the last month or best month or
+          trailing 3 months, depending on the forecast mode.
+        data_type: float64
+        quote: true
+      - name: total_invoiced_in_month
+        description: This column represents the total amount invoiced in a given month.
+          It is calculated by multiplying the estimated wins per day by the
+          average total invoiced from the previous month, and then multiplying
+          that result by the number of days in the current month.
+        data_type: float64
+        quote: true
+      - name: med_total_invoiced_in_month
+        description: This column represents the median total invoiced in a given month.
+          It is calculated by multiplying the estimated wins per day by the
+          median total invoiced from the previous month, and then multiplying
+          that result by the number of days in the current month.
+        data_type: float64
+        quote: true

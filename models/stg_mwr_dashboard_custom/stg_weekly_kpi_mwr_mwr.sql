@@ -1,0 +1,22 @@
+select
+    'MWR' as company,
+    'MWR' as branch,
+    a.date,
+    a.total_income as rev,
+    a.gross_profit as gp,
+    a.overtime,
+    a.sub_labor,
+    a.total_labor,
+    a.ar_o60_value as ar_o60,
+    a.ar_total,
+    a.employee_count as emp,
+    a.mitigation_income as mitigation_revenue,
+    a.mitigation_labor,
+    a.raven_miles,
+    a.ctn_income,
+    a.ctn_labor,
+    a.ets_income,
+    a.ets_labor,
+    a.str_income,
+    a.str_labor
+from {{ source("google_sheets", "weekly_kpi_mwr_mwr") }} a
