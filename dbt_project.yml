@@ -6,7 +6,7 @@ name: 'mwr'
 version: '1.0.0'
 
 # This setting configures which "profile" dbt uses for this project.
-profile: 'cosgrove_data'
+profile: 'default'
 
 
 # These configurations specify where dbt should look for different types of files.

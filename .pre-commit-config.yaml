@@ -2,4 +2,5 @@ repos:
 - repo: https://github.com/dbt-checkpoint/dbt-checkpoint
   rev: v1.0.0
   hooks:
+  - id: dbt-run
   - id: dbt-test
