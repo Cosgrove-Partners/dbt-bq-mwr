@@ -1,11 +1,11 @@
 name: schedule_dbt_job
 
 on:
-schedule:
+  schedule:
     # run at 7AM every single day
     # https://crontab.guru <-- for generating CRON expression
     - cron: "*/10 * * * *"
-push:
+  push:
     branches:
     # run on push to development branch
     - main
