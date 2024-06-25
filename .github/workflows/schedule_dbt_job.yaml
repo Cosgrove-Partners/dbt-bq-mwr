@@ -28,20 +28,20 @@ schedule_dbt_job:
 
     steps:
     - name: Check out
-        uses: actions/checkout@master
+      uses: actions/checkout@master
 
     - uses: actions/setup-python@v1
-        with:
-        python-version: "3.11.x"
+      with:
+      python-version: "3.11.x"
 
     - name: Install dependencies
-        run: |
+      run: |
         pip install dbt-core dbt-bigquery
         dbt deps
 
     # dbt related commands here - run use --target prod/dev to run for specific environments
     - name: Run dbt models
-        run: dbt run
+      run: dbt run
 
     - name: Test dbt models
-        run: dbt test
+      run: dbt test
