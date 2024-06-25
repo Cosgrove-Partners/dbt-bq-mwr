@@ -9,17 +9,18 @@ on:
     branches:
     # run on push to development branch
     - main
+    
 env:
-DBT_PROFILES_DIR: ${{ secrets.DBT_PROFILES_DIR }}
-DBT_TARGET: ${{ secrets.DBT_TARGET }}
-DBT_GCP_PROJECT: ${{ secrets.DBT_GCP_PROJECT }}
-DBT_GCP_DATASET: ${{ secrets.DBT_GCP_DATASET }}
-DBT_GCP_LOCATION: ${{ secrets.DBT_GCP_LOCATION }}
-DBT_CRED_TYPE: ${{ secrets.DBT_CRED_TYPE }}
-DBT_CRED_PKID: ${{ secrets.DBT_CRED_PKID }}
-DBT_CRED_CLID: ${{ secrets.DBT_CRED_CLID }}
-DBT_CRED_CLEM: ${{ secrets.DBT_CRED_CLEM }}
-DBT_CRED_PKEY: ${{ secrets.DBT_CRED_PKEY }}
+  DBT_PROFILES_DIR: ${{ secrets.DBT_PROFILES_DIR }}
+  DBT_TARGET: ${{ secrets.DBT_TARGET }}
+  DBT_GCP_PROJECT: ${{ secrets.DBT_GCP_PROJECT }}
+  DBT_GCP_DATASET: ${{ secrets.DBT_GCP_DATASET }}
+  DBT_GCP_LOCATION: ${{ secrets.DBT_GCP_LOCATION }}
+  DBT_CRED_TYPE: ${{ secrets.DBT_CRED_TYPE }}
+  DBT_CRED_PKID: ${{ secrets.DBT_CRED_PKID }}
+  DBT_CRED_CLID: ${{ secrets.DBT_CRED_CLID }}
+  DBT_CRED_CLEM: ${{ secrets.DBT_CRED_CLEM }}
+  DBT_CRED_PKEY: ${{ secrets.DBT_CRED_PKEY }}
 
 jobs:
   schedule_dbt_job:
