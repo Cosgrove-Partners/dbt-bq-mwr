@@ -22,7 +22,7 @@ DBT_CRED_CLEM: ${{ secrets.DBT_CRED_CLEM }}
 DBT_CRED_PKEY: ${{ secrets.DBT_CRED_PKEY }}
 
 jobs:
-schedule_dbt_job:
+  schedule_dbt_job:
     name: schedule_dbt_job
     runs-on: ubuntu-latest
 
