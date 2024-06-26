@@ -22,9 +22,10 @@ jobs:
   schedule_dbt_job:
     name: schedule_dbt_job
     runs-on: ubuntu-latest
-    outputs:
-     RUNNER: ${{ runner.name }}
-
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write  
+      
     steps:
     - name: Check out
       uses: actions/checkout@master
