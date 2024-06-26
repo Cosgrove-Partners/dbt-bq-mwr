@@ -34,6 +34,7 @@ models:
     prod_mwr_dashboard_custom:
       schema: 'prod_mwr_dashboard_custom'
       +materialized: table
+      +post-hook: "{{ add_metadata() }}"
     stg_mwr_dashboard_custom:
       schema: 'stg_mwr_dashboard_custom'
       +materialized: table
