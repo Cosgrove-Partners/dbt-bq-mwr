@@ -31,7 +31,8 @@ jobs:
     - name: Check out
       uses: actions/checkout@master
 
-    - uses: actions/setup-python@v1
+    - name: Set up Python
+      uses: actions/setup-python@v1
       with:
         python-version: "3.11.x"
 
@@ -42,7 +43,7 @@ jobs:
 
     # dbt related commands here - run use --target prod/dev to run for specific environments
     - name: Run dbt models
-      run: dbt run
+      run: dbt run --target ${{ secrets.DBT_TARGET }}
 
     - name: Test dbt models
-      run: dbt test
+      run: dbt test --target ${{ secrets.DBT_TARGET }}
