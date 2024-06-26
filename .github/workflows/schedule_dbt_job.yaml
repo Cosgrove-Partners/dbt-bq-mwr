@@ -1,6 +1,7 @@
 name: schedule_dbt_job
 
 on:
+  workflow_dispatch:
   schedule:
     # https://crontab.guru <-- for generating CRON expression
     - cron: "*/20 * * * *"
