@@ -9,7 +9,7 @@ on:
     branches:
     # run on push to development branch
     - main
-    
+
 env:
   DBT_PROFILES_DIR: ${{ secrets.DBT_PROFILES_DIR }}
   DBT_TARGET: ${{ secrets.DBT_TARGET }}
@@ -33,7 +33,7 @@ jobs:
 
     - uses: actions/setup-python@v1
       with:
-      python-version: "3.11.x"
+        python-version: "3.11.x"
 
     - name: Install dependencies
       run: |
