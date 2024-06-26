@@ -45,6 +45,7 @@ jobs:
       run: dbt test --target ${{ secrets.DBT_TARGET }}
 
   deploy:
+    depends-on: schedule_dbt_job
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
