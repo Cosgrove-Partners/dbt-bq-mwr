@@ -46,26 +46,22 @@ jobs:
     - name: Test dbt models
       run: dbt test --target ${{ secrets.DBT_TARGET }}
 
-  deploy:
-    needs: schedule_dbt_job
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ${{ needs.schedule_dbt_job.outputs.RUNNER }}
-    steps:
-      - name: dbt docs
-        run: |
-            dbt docs generate
-            mkdir docs
-            cp dbt/target/manifest.json docs/manifest.json
-            cp dbt/target/catalog.json docs/catalog.json
-            cp dbt/target/index.html docs/index.html
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: 'docs/'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+    - name: dbt docs
+      run: |
+          dbt docs generate
+          mkdir docs
+          cp dbt/target/manifest.json docs/manifest.json
+          cp dbt/target/catalog.json docs/catalog.json
+          cp dbt/target/index.html docs/index.html
+
+    - name: Setup Pages
+      uses: actions/configure-pages@v5
+
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: 'docs/'
+
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
