@@ -3,7 +3,7 @@ name: schedule_dbt_job
 on:
   schedule:
     # https://crontab.guru <-- for generating CRON expression
-    - cron: "*/10 * * * *"
+    - cron: "*/20 * * * *"
 
 env:
   DBT_PROFILES_DIR: ${{ secrets.DBT_PROFILES_DIR }}
