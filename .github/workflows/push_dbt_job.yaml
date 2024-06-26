@@ -22,6 +22,8 @@ jobs:
   schedule_dbt_job:
     name: schedule_dbt_job
     runs-on: ubuntu-latest
+    outputs:
+     RUNNER: ${{ runner.name }}
 
     steps:
     - name: Check out
@@ -49,7 +51,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ needs.schedule_dbt_job.outputs.RUNNER }}
     steps:
       - name: dbt docs
         run: |
